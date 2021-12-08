@@ -1,0 +1,7 @@
+name: LootableCorpses
+version: 1.0
+main: ca.bungo.lc.LootableCorpses
+api-version: 1.13
+commands:
+  test:
+    usage: /test
