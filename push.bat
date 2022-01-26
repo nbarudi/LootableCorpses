@@ -1,1 +1,0 @@
-move /Y "D:\Old Files\Minecraft Things\Programming Projects\Corpses\target\LootableCorpses-1.0-SNAPSHOT-Final.jar"  "D:\Old Files\Minecraft Things\Server Projects\1.18\Server\plugins"
