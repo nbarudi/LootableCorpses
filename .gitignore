@@ -1,4 +1,5 @@
 build.bat
 push.bat
 target/
-*/target/
+*/target/*
+*/target/**
