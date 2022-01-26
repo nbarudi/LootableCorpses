@@ -5,8 +5,7 @@ import ca.bungo.lc.cmds.TestCommand;
 import ca.bungo.lc.events.PlayerConnectionEvents;
 import ca.bungo.lc.events.PlayerDeath;
 import ca.bungo.lc.util.PacketListening;
-import ca.bungo.lc.versions.Version1_16_R3;
-import ca.bungo.lc.versions.Version1_18_1_R1;
+import ca.bungo.lc.versions.*;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import org.bukkit.Bukkit;
@@ -16,8 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import ca.bungo.lc.versions.Version1_16_R2;
-import ca.bungo.lc.versions.Version1_17_R1;
 
 public class LootableCorpses extends JavaPlugin {
 
@@ -81,8 +78,10 @@ public class LootableCorpses extends JavaPlugin {
                 corpseCore = new Version1_16_R2(this, emptySlot);
                 return;
             case "v1_16_R1":
+                corpseCore = new Version1_16_R1(this, emptySlot);
                 return;
             case "v1_15_R1":
+                corpseCore = new Version1_15_R1(this, emptySlot);
                 return;
             case "v1_14_R1":
                 return;

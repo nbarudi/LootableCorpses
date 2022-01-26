@@ -5,16 +5,16 @@ import ca.bungo.lc.events.PlayerInteractCorpseEvent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.server.v1_16_R2.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class Version1_16_R2 implements CorpseCore {
+public class Version1_16_R1 implements CorpseCore {
 
     private List<EntityPlayer> corpses = new ArrayList<>();
     private Map<String, Inventory> items = new HashMap<>();
@@ -39,7 +39,7 @@ public class Version1_16_R2 implements CorpseCore {
     private Plugin plugin;
     private ItemStack emptyItem;
 
-    public Version1_16_R2(Plugin plugin, ItemStack emptyItem){
+    public Version1_16_R1(Plugin plugin, ItemStack emptyItem){
         this.plugin = plugin;
         this.emptyItem = emptyItem;
     }
@@ -86,7 +86,7 @@ public class Version1_16_R2 implements CorpseCore {
         items.put(corpse.getUniqueIDString(), inventory);
         IdToCorpse.put(corpse.getId(), corpse);
 
-        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R2.ItemStack>> equipment = new ArrayList<>();
+        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R1.ItemStack>> equipment = new ArrayList<>();
         if(inventory.getItem(36) != null && inventory.getItem(36).getItemMeta() != emptyItem.getItemMeta())
             equipment.add(new Pair<>(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inventory.getItem(36))));
         if(inventory.getItem(37) != null && inventory.getItem(37).getItemMeta() != emptyItem.getItemMeta())
@@ -152,7 +152,7 @@ public class Version1_16_R2 implements CorpseCore {
         IdToCorpse.put(corpse.getId(), corpse);
         items.put(corpse.getUniqueIDString(), inv);
 
-        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R2.ItemStack>> equipment = new ArrayList<>();
+        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R1.ItemStack>> equipment = new ArrayList<>();
         if(inv.getItem(36) != null && inv.getItem(36).getItemMeta() != emptyItem.getItemMeta())
             equipment.add(new Pair<>(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inv.getItem(36))));
         if(inv.getItem(37) != null && inv.getItem(37).getItemMeta() != emptyItem.getItemMeta())

@@ -105,12 +105,12 @@ public class Version1_16_R3 implements CorpseCore {
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
             conn.sendPacket(new PacketPlayOutEntityEquipment(corpse.getId(), equipment));
             conn.sendPacket(move);
-            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
             }, 1);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.showPlayer(plugin, corpse.getBukkitEntity().getPlayer());
+                conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             }, 15);
         }
     }
@@ -169,13 +169,13 @@ public class Version1_16_R3 implements CorpseCore {
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(corpse));
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
             conn.sendPacket(move);
-            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             conn.sendPacket(new PacketPlayOutEntityEquipment(corpse.getId(), equipment));
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 plr.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
             }, 1);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 plr.showPlayer(plugin, corpse.getBukkitEntity().getPlayer());
+                conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             }, 15);
         }
     }
@@ -221,12 +221,12 @@ public class Version1_16_R3 implements CorpseCore {
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(corpse));
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
             conn.sendPacket(move);
-            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
             }, 1);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.showPlayer(plugin, corpse.getBukkitEntity().getPlayer());
+                conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
             }, 15);
         }
     }
@@ -248,6 +248,7 @@ public class Version1_16_R3 implements CorpseCore {
         for(Player plr : Bukkit.getOnlinePlayers()) {
             PlayerConnection conn = ((CraftPlayer) plr).getHandle().playerConnection;
             conn.sendPacket(new PacketPlayOutEntityDestroy(corpse.getId()));
+            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, corpse));
         }
     }
 

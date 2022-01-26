@@ -5,20 +5,21 @@ import ca.bungo.lc.events.PlayerInteractCorpseEvent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.server.v1_16_R2.*;
+import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -30,7 +31,8 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class Version1_16_R2 implements CorpseCore {
+//ToDo: Actually go through and reorganize all the corpse functions to call 1 'SpwanCorpse' function instead of repeating packet code in each one.
+public class Version1_15_R1 implements CorpseCore {
 
     private List<EntityPlayer> corpses = new ArrayList<>();
     private Map<String, Inventory> items = new HashMap<>();
@@ -39,7 +41,7 @@ public class Version1_16_R2 implements CorpseCore {
     private Plugin plugin;
     private ItemStack emptyItem;
 
-    public Version1_16_R2(Plugin plugin, ItemStack emptyItem){
+    public Version1_15_R1(Plugin plugin, ItemStack emptyItem){
         this.plugin = plugin;
         this.emptyItem = emptyItem;
     }
@@ -86,15 +88,15 @@ public class Version1_16_R2 implements CorpseCore {
         items.put(corpse.getUniqueIDString(), inventory);
         IdToCorpse.put(corpse.getId(), corpse);
 
-        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R2.ItemStack>> equipment = new ArrayList<>();
+        List<PacketPlayOutEntityEquipment> equipment = new ArrayList<>();
         if(inventory.getItem(36) != null && inventory.getItem(36).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inventory.getItem(36))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inventory.getItem(36))));
         if(inventory.getItem(37) != null && inventory.getItem(37).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(inventory.getItem(37))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(inventory.getItem(37))));
         if(inventory.getItem(38) != null && inventory.getItem(38).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(inventory.getItem(38))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(inventory.getItem(38))));
         if(inventory.getItem(39) != null && inventory.getItem(39).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(inventory.getItem(39))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(inventory.getItem(39))));
 
 
         for(Player plr : Bukkit.getOnlinePlayers()) {
@@ -102,7 +104,8 @@ public class Version1_16_R2 implements CorpseCore {
             conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, corpse));
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(corpse));
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
-            conn.sendPacket(new PacketPlayOutEntityEquipment(corpse.getId(), equipment));
+            for(PacketPlayOutEntityEquipment e : equipment)
+                conn.sendPacket(e);
             conn.sendPacket(move);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
@@ -152,15 +155,15 @@ public class Version1_16_R2 implements CorpseCore {
         IdToCorpse.put(corpse.getId(), corpse);
         items.put(corpse.getUniqueIDString(), inv);
 
-        List<Pair<EnumItemSlot, net.minecraft.server.v1_16_R2.ItemStack>> equipment = new ArrayList<>();
+        List<PacketPlayOutEntityEquipment> equipment = new ArrayList<>();
         if(inv.getItem(36) != null && inv.getItem(36).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inv.getItem(36))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inv.getItem(36))));
         if(inv.getItem(37) != null && inv.getItem(37).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(inv.getItem(37))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(inv.getItem(37))));
         if(inv.getItem(38) != null && inv.getItem(38).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(inv.getItem(38))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(inv.getItem(38))));
         if(inv.getItem(39) != null && inv.getItem(39).getItemMeta() != emptyItem.getItemMeta())
-            equipment.add(new Pair<>(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(inv.getItem(39))));
+            equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(inv.getItem(39))));
 
         for(Player plr : Bukkit.getOnlinePlayers()) {
             PlayerConnection conn = ((CraftPlayer) plr).getHandle().playerConnection;
@@ -168,7 +171,8 @@ public class Version1_16_R2 implements CorpseCore {
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(corpse));
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
             conn.sendPacket(move);
-            conn.sendPacket(new PacketPlayOutEntityEquipment(corpse.getId(), equipment));
+            for(PacketPlayOutEntityEquipment e : equipment)
+                conn.sendPacket(e);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 plr.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
             }, 1);
@@ -214,11 +218,25 @@ public class Version1_16_R2 implements CorpseCore {
                     .getY() - 1.7 - loc.getY()) * 32),
                     (byte) 0, false);
 
+            Inventory inv = items.get(corpse.getUniqueIDString());
+
+            List<PacketPlayOutEntityEquipment> equipment = new ArrayList<>();
+            if(inv.getItem(36) != null && inv.getItem(36).getItemMeta() != emptyItem.getItemMeta())
+                equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(inv.getItem(36))));
+            if(inv.getItem(37) != null && inv.getItem(37).getItemMeta() != emptyItem.getItemMeta())
+                equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(inv.getItem(37))));
+            if(inv.getItem(38) != null && inv.getItem(38).getItemMeta() != emptyItem.getItemMeta())
+                equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(inv.getItem(38))));
+            if(inv.getItem(39) != null && inv.getItem(39).getItemMeta() != emptyItem.getItemMeta())
+                equipment.add(new PacketPlayOutEntityEquipment(corpse.getId(),EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(inv.getItem(39))));
+
 
             PlayerConnection conn = ((CraftPlayer) player).getHandle().playerConnection;
             conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, corpse));
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(corpse));
             conn.sendPacket(new PacketPlayOutEntityMetadata(corpse.getId(), watcher, false));
+            for(PacketPlayOutEntityEquipment e : equipment)
+                conn.sendPacket(e);
             conn.sendPacket(move);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
                 player.hidePlayer(plugin, corpse.getBukkitEntity().getPlayer());
@@ -356,6 +374,16 @@ public class Version1_16_R2 implements CorpseCore {
             if(isInvEmpty(event.getInventory()))
                 removeCorpse(getCorpseFromInventory(event.getInventory()).getId());
         }
+    }
+
+    /**
+     * Minecraft Updates Packet information in 1.15 on respawn? Atleast thats what I've seen
+     * */
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event){
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->{
+            spawnCorpses(event.getPlayer());
+        }, 40);
     }
 
     //Helper Functions
