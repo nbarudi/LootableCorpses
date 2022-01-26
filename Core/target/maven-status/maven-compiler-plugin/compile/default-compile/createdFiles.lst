@@ -1,0 +1,5 @@
+ca\bungo\lc\cmds\TestCommand.class
+ca\bungo\lc\events\PlayerConnectionEvents.class
+ca\bungo\lc\events\PlayerDeath.class
+ca\bungo\lc\core\LootableCorpses.class
+ca\bungo\lc\util\PacketListening.class

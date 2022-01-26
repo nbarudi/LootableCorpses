@@ -1,0 +1,4 @@
+ca\bungo\lc\events\PlayerInteractCorpseEvent.class
+ca\bungo\lc\api\CorpseCore.class
+ca\bungo\lc\util\FileManager$Config.class
+ca\bungo\lc\util\FileManager.class

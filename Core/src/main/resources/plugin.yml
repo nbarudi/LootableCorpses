@@ -1,0 +1,12 @@
+main: ca.bungo.lc.core.LootableCorpses
+name: ${project.name}
+version: ${project.version}
+author: Nick Barudi
+description: ${project.description}
+website: ${project.url}
+depend: [ProtocolLib]
+commands:
+  test:
+    description: Testing Command
+    permission: lc.op
+    usage: /test

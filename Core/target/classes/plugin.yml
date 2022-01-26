@@ -1,0 +1,12 @@
+main: ca.bungo.lc.core.LootableCorpses
+name: lootablecorpses-core
+version: 1.0-SNAPSHOT
+author: Nick Barudi
+description: Creates Lootable corpses in the world when players die!
+website: https://github.com/nbarudi/lootablecorpses-core
+depend: [ProtocolLib]
+commands:
+  test:
+    description: Testing Command
+    permission: lc.op
+    usage: /test
