@@ -9,8 +9,10 @@
         <module name="Wrapper1.16_R2" />
         <module name="Wrapper1.16_R3" />
         <module name="Wrapper1.17_R1" />
+        <module name="Wrapper1.14_R1" />
         <module name="Wrapper1.16_R1" />
         <module name="Wrapper1.15_R1" />
+        <module name="Wrapper1.13_R2" />
         <module name="Abstract" />
         <module name="Core" />
         <module name="Wrapper1.18.1_R1" />

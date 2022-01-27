@@ -16,6 +16,8 @@
         <module>Wrapper1.16_R2</module>
         <module>Wrapper1.16_R1</module>
         <module>Wrapper1.15_R1</module>
+        <module>Wrapper1.14_R1</module>
+        <module>Wrapper1.13_R2</module>
         <module>Dist</module>
     </modules>
     <packaging>pom</packaging>

@@ -84,8 +84,10 @@ public class LootableCorpses extends JavaPlugin {
                 corpseCore = new Version1_15_R1(this, emptySlot);
                 return;
             case "v1_14_R1":
+                corpseCore = new Version1_14_R1(this, emptySlot);
                 return;
             case "v1_13_R2":
+                corpseCore = new Version1_13_R2(this, emptySlot);
                 return;
             case "v1_13_R1":
                 return;
