@@ -26,23 +26,25 @@ public class LootableCorpses extends JavaPlugin {
     public void onEnable(){
         protocolManager = ProtocolLibrary.getProtocolManager();
 
-        emptySlot = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+        emptySlot = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta meta = emptySlot.getItemMeta();
         meta.setDisplayName(ChatColor.BLACK + "#");
         emptySlot.setItemMeta(meta);
 
         registerConfigs();
         registerNMS();
-        registerCommands();
-        registerEvents();
 
-        corpseCore.loadCorpseData();
-
-
+        if(this.isEnabled()){
+            registerCommands();
+            registerEvents();
+            corpseCore.loadCorpseData();
+        }
     }
 
     @Override
     public void onDisable(){
+        if(corpseCore == null)
+            return;
         corpseCore.saveCorpseData();
     }
 
@@ -87,7 +89,7 @@ public class LootableCorpses extends JavaPlugin {
                 corpseCore = new Version1_14_R1(this, emptySlot);
                 return;
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Invalid Minecraft Server Version! Only Supports 1.14-1.18.1");
-        Bukkit.getPluginManager().disablePlugin(this);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Bodies] Invalid Minecraft Server Version! Only Supports 1.14-1.18.1");
+        this.setEnabled(false);
     }
 }

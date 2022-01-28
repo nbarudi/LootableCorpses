@@ -2,6 +2,7 @@ package ca.bungo.lc.api;
 
 import ca.bungo.lc.events.PlayerInteractCorpseEvent;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,6 +43,14 @@ public interface CorpseCore extends Listener {
      * @param player    Player to spawn all the corpses for.
      * */
     void spawnCorpses(Player player);
+
+    /**
+     * Get a Corpse Entity based on its ID.
+     *
+     * @param id    The ID of the corpse you need to obtain the Entity Data from
+     * @return      The Bukkit Entity of the Corpse.
+     * */
+    Entity getCorpseById(int id);
 
     /**
      * Clear all stored corpse information

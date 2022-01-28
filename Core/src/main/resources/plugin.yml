@@ -5,6 +5,7 @@ author: Nick Barudi
 description: ${project.description}
 website: ${project.url}
 depend: [ProtocolLib]
+api-version: 1.13
 commands:
   test:
     description: Testing Command

@@ -20,6 +20,7 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -151,6 +152,11 @@ public class Version1_17_R1 implements CorpseCore {
         }
     }
 
+    @Override
+    public Entity getCorpseById(int id){
+        return this.idToPlayer.get(id).getBukkitEntity();
+    }
+
     private void removeCorpsePacket(ServerPlayer corpse){
         for(Player player : Bukkit.getOnlinePlayers()){
             ((CraftPlayer)player).getHandle().connection.send(new ClientboundRemoveEntityPacket(corpse.getId()));
@@ -275,6 +281,8 @@ public class Version1_17_R1 implements CorpseCore {
     @Override
     @EventHandler
     public void onPlayerInteractCorpseEvent(PlayerInteractCorpseEvent event) {
+        if(event.isCancelled())
+            return;
         if(this.idToPlayer.containsKey(event.getCorpseID())){
             ServerPlayer corpse = this.idToPlayer.get(event.getCorpseID());
             Player player = event.getPlayer();

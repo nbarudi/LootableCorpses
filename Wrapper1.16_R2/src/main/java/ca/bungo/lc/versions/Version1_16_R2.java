@@ -231,6 +231,11 @@ public class Version1_16_R2 implements CorpseCore {
     }
 
     @Override
+    public org.bukkit.entity.Entity getCorpseById(int id){
+        return this.IdToCorpse.get(id).getBukkitEntity();
+    }
+
+    @Override
     public void clearCorpses() {
         for(EntityPlayer corpse : corpses) {
             removeCorpse(corpse.getId());
@@ -309,6 +314,8 @@ public class Version1_16_R2 implements CorpseCore {
     @Override
     @EventHandler
     public void onPlayerInteractCorpseEvent(PlayerInteractCorpseEvent event) {
+        if(event.isCancelled())
+            return;
         if(IdToCorpse.containsKey(event.getCorpseID())){
             EntityPlayer corpse = IdToCorpse.get(event.getCorpseID());
             Inventory inv = items.get(corpse.getUniqueIDString());
