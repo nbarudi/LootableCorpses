@@ -12,7 +12,6 @@
         <module name="Wrapper1.14_R1" />
         <module name="Wrapper1.16_R1" />
         <module name="Wrapper1.15_R1" />
-        <module name="Wrapper1.13_R2" />
         <module name="Abstract" />
         <module name="Core" />
         <module name="Wrapper1.18.1_R1" />
@@ -26,6 +25,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Dist" target="8" />
+      <module name="Wrapper1.13_R2" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

@@ -86,23 +86,8 @@ public class LootableCorpses extends JavaPlugin {
             case "v1_14_R1":
                 corpseCore = new Version1_14_R1(this, emptySlot);
                 return;
-            case "v1_13_R2":
-                corpseCore = new Version1_13_R2(this, emptySlot);
-                return;
-            case "v1_13_R1":
-                return;
-            case "v1_12_R1":
-                return;
-            case "v1_11_R1":
-                return;
-            case "v1_10_R1":
-                return;
-            case "v1_9_R2":
-                return;
-            case "v1_9_R1":
-                return;
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Invalid Minecraft Server Version! Only Supports 1.9-1.18.1");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Invalid Minecraft Server Version! Only Supports 1.14-1.18.1");
         Bukkit.getPluginManager().disablePlugin(this);
     }
 }
